@@ -19,7 +19,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:desktop": "npm run build:desktop && cross-env NODE_ENV=development PORT=3000 electron .",
+    "start:desktop": "cross-env NODE_ENV=development PORT=3000 electron .",
+    "build:desktop:dev": "tsc --watch -p ./main/tsconfig.json",
     "build": "cross-env PUBLIC_URL=./ react-scripts build",
     "build:desktop": "tsc -p ./main/tsconfig.json",
     "test": "react-scripts test",

@@ -13,7 +13,6 @@ if (process.env.NODE_ENV === 'development') {
   };
 } else {
   resolveHtmlPath = (htmlFileName: string) => {
-    console.log(`file://${path.resolve(__dirname, './', htmlFileName)}`, 16);
     return `file://${path.resolve(__dirname, './', htmlFileName)}`;
   };
 }
