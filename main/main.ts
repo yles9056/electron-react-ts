@@ -23,8 +23,7 @@ export default class AppUpdater {
     autoUpdater.checkForUpdatesAndNotify();
   }
 }
-
-let mainWindow: BrowserWindow | null = null;
+let mainWindow: BrowserWindow;
 
 ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
@@ -65,20 +64,26 @@ const createWindow = async () => {
   //   await installExtensions();
   // }
 
-  const RESOURCES_PATH = app.isPackaged
-    ? path.join(process.resourcesPath, 'assets')
-    : path.join(__dirname, '../../assets');
+  // const RESOURCES_PATH = app.isPackaged
+  //   ? path.join(process.resourcesPath, 'assets')
+  //   : path.join(__dirname, '../../assets');
 
-  const getAssetPath = (...paths: string[]): string => {
-    return path.join(RESOURCES_PATH, ...paths);
-  };
+  // const getAssetPath = (...paths: string[]): string => {
+  //   return path.join(RESOURCES_PATH, ...paths);
+  // };
 
   mainWindow = new BrowserWindow({
-    show: false,
-    width: 1024,
-    height: 728,
-    icon: getAssetPath('icon.png'),
+    width: 1280,
+    height: 786,
+    minWidth: 1000,
+    minHeight: 750,
+    frame: false,
+    autoHideMenuBar: true,
+    icon: 'public/image/logo.png',
+    useContentSize: true,
     webPreferences: {
+      nativeWindowOpen: false,
+      contextIsolation: true,
       preload: path.join(__dirname, 'preload.js'),
     },
   });
@@ -98,10 +103,16 @@ const createWindow = async () => {
       mainWindow.focus();
     }
   });
-
-  mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
+  // 监听窗口最大化以及从最大化退出事件
+  mainWindow.on('maximize', () => {
+    mainWindow.webContents.send('main-window-max');
+  })
+  mainWindow.on('unmaximize', () => {
+      mainWindow.webContents.send('main-window-unmax');
+  })
+  // mainWindow.on('closed', () => {
+  //   mainWindow = null;
+  // });
 
   // Open urls in the user's browser
   mainWindow.webContents.on('new-window', (event, url) => {
@@ -113,11 +124,9 @@ const createWindow = async () => {
   // eslint-disable-next-line
   new AppUpdater();
 };
-
 /**
  * Add event listeners...
  */
-
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
@@ -133,3 +142,14 @@ app.on('activate', () => {
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) createWindow();
 });
+
+// 监听最大化\最小化\关闭事件
+ipcMain.on('min', () => mainWindow.minimize());
+ipcMain.on('max', () => {
+    if (mainWindow.isMaximized()) {
+        mainWindow.restore();
+    } else {
+        mainWindow.maximize();
+    }
+});
+ipcMain.on('close', () => mainWindow.close());

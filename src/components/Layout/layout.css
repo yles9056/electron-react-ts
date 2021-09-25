@@ -1,0 +1,8 @@
+.top-bar {
+    -webkit-app-region: drag;
+    -webkit-user-select: none;
+}
+
+.css-10d9dml-MuiTabs-indicator {
+    background-color: #eee;
+}
