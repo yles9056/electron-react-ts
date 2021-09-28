@@ -1,8 +1,8 @@
 .top-bar {
     -webkit-app-region: drag;
     -webkit-user-select: none;
+    background-color: #FCFCFC;
 }
-
-.css-10d9dml-MuiTabs-indicator {
-    background-color: #eee;
+.main-area {
+    flex: 1;
 }

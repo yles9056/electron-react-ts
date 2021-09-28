@@ -1,0 +1,95 @@
+.preview {
+    width: 300px;
+    height: 300px;
+}
+
+.clip-canvas {
+    /* border: 1px solid black; */
+    position: relative;
+    overflow: hidden;
+}
+
+.clip-mark {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    /* background:rgba(0,0,0,.5);  */
+}
+
+.clip-bound {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border: 1px solid blue;
+    z-index: 1;
+    outline: rgb(0, 0, 0, 0.3) solid 800px;
+}
+
+.control-point {
+    box-sizing: border-box;
+    position: absolute;
+    display: inline-block;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 5px;
+    background: white;
+    user-select: none;
+}
+
+.control-point-l {
+    cursor: w-resize;
+    left: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.control-point-r {
+    cursor: e-resize;
+    right: 0;
+    top: 50%;
+    transform: translate(50%, -50%);
+}
+
+.control-point-t {
+    cursor: n-resize;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.control-point-d {
+    cursor: s-resize;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 50%);
+}
+
+.control-point-lt {
+    cursor: nw-resize;
+    left: 0;
+    top: 0;
+    transform: translate(-50%, -50%);
+}
+
+.control-point-rt {
+    cursor: ne-resize;
+    right: 0;
+    transform: translate(50%, -50%);
+}
+
+.control-point-ld {
+    cursor: sw-resize;
+    left: 0;
+    bottom: 0;
+    transform: translate(-50%, 50%);
+}
+
+.control-point-rd {
+    cursor: se-resize;
+    right: 0;
+    bottom: 0;
+    transform: translate(50%, 50%);
+}
+

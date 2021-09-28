@@ -1,0 +1,3 @@
+.MuiButtonBase-root, .MuiMenuItem-root:hover, .MuiIconButton-root:hover {
+    background-color: transparent;
+}

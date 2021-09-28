@@ -1,41 +1,18 @@
 import React, {useEffect} from 'react'
-import { Box, AppBar, Toolbar, IconButton } from '@material-ui/core'
-import { makeStyles, styled } from '@material-ui/styles'
+import { AppBar, Toolbar, IconButton,Avatar } from '@material-ui/core'
+import { styled } from '@material-ui/styles'
 import { MinimizeIcon, MaximizeIcon, CloseIcon, UnfoldIcon, RestoreIcon } from '../../icons'
 /**
  * 标题栏区域
  */
 const { ipcRenderer } = window.electron;
-const useStyled = makeStyles({
-    root: {
-        backgroundImage: 'linear-gradient(#FFFFFF, #F2F2F2)',
-        boxShadow: '0px 0px 4px 0px #979797'
-    },
-    button: {
-        position: 'absolute',
-        right: '10px'
-    },
-    regular: {
-        minHeight: '48px'
-    }
-})
-const MyIconButton = styled(IconButton)({
-    cursor: 'pointer',
-    marginLeft: '20px',
-    '&:hover': {
-        backgroundColor: 'rgba(0, 0,0,0)'
-    },
-})
 
-const topBarBox = {
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '100%'
-}
+const MyIconButton = styled(IconButton)({
+    cursor: 'pointer'
+})
 export default function TopBar() {
-    const classes = useStyled();
     // 设置展示
-    const [showRestore, setShowRestore] = React.useState(false);
+    const [showRestore, setShowRestore] = React.useState(true);
     // 点击窗口控制图标时
     const setWin = (type: string) => {
         ipcRenderer.send(type)
@@ -50,11 +27,12 @@ export default function TopBar() {
         });
     })
     return (
-        <Box sx={topBarBox}>
-            <AppBar position="static" color="inherit" className={classes.root}>
-                <Toolbar classes={{ regular: classes.regular }}>
+        <>
+            <Avatar sx={{width: '69px', height: '100%'}} alt="" src="./image/logo.png" variant="square" />
+            <AppBar position="static" color="transparent" sx={{boxShadow: 'none', flex: 1}}>
+                <Toolbar>
                     <UnfoldIcon />
-                    <div className={classes.button}>
+                    <div style={{position: 'absolute', right: "5px"}}>
                         <MyIconButton aria-label="minimize" size="small" onClick={() => setWin('min')}>
                             <MinimizeIcon />
                         </MyIconButton>
@@ -67,6 +45,6 @@ export default function TopBar() {
                     </div>
                 </Toolbar>
             </AppBar>
-        </Box>
+        </>
     )
 }

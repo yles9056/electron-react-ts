@@ -55,7 +55,7 @@ if (isDevelopment) {
 //     )
 //     .catch(console.log);
 // };
-
+const windowStateKeeper = require('electron-window-state');
 const createWindow = async () => {
   // if (
   //   process.env.NODE_ENV === 'development' ||
@@ -71,16 +71,20 @@ const createWindow = async () => {
   // const getAssetPath = (...paths: string[]): string => {
   //   return path.join(RESOURCES_PATH, ...paths);
   // };
-
+  let mainWindowState = windowStateKeeper({
+    defaultWidth: 1280,
+    defaultHeight: 768
+  });
   mainWindow = new BrowserWindow({
-    width: 1280,
-    height: 786,
-    minWidth: 1000,
-    minHeight: 750,
+    x: mainWindowState.x,
+    y: mainWindowState.y,
+    width: mainWindowState.width,
+    height: mainWindowState.height,
+    minWidth: 800,
+    minHeight: 600,
     frame: false,
-    autoHideMenuBar: true,
+    show: false,
     icon: 'public/image/logo.png',
-    useContentSize: true,
     webPreferences: {
       nativeWindowOpen: false,
       contextIsolation: true,
@@ -123,6 +127,7 @@ const createWindow = async () => {
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
   new AppUpdater();
+  mainWindowState.manage(mainWindow);
 };
 /**
  * Add event listeners...

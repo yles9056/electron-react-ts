@@ -1,0 +1,9 @@
+.title {
+    height: 48px;
+    line-height: 48px;
+    margin: 0 15px;
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    color: #003A60
+}

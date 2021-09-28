@@ -6,8 +6,11 @@ import { makeStyles, createStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles(() => createStyles({
     root: {
-        width: '0.8em',
-        height: '0.8em'
+        width: '16px',
+        height: '16px',
+        '& :hover': {
+            backgroundColor: 'transparent'
+        }
     }
 }));
 
