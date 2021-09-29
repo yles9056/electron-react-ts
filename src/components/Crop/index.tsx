@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import VideoView from '../VideoView'
 import './style.css'
+import cropRatio from '../../helpers/util/crop'
 enum Direction {
     move = "move",
     t = "t",
@@ -13,16 +13,29 @@ enum Direction {
     rd = "rd",
 }
 export default class Crop extends Component {
-    controlPoints = ["t", "d", "l", "r", "lt", "rt", "ld", "rd"]
-    videoInfo = {w: 800, h: 600}
+    cropArea = React.createRef();
+    cropWidth = this.cropArea.current?.offsetWidth;
+    cropHeight = this.cropArea.current?.offsetHeight;
     state = {
+        isShowCrop: false,
         clipOnMove: false,
         curClipPos: { x: 0, y: 0 },
         curMousePos: { x: 0, y: 0 },
         clipMoved: { x: 0, y: 0 },
-        clipRect: { w: this.videoInfo.w, h: this.videoInfo.h },
-        direction: Direction.move
+        clipRect: { w: 400, h: 600},
+        direction: ""
     }
+    controlPoints = ["t", "d", "l", "r", "lt", "rt", "ld", "rd"]
+    componentDidMount = () => {
+        cropRatio.on('crop', (value) => {
+            if(value !== "") {
+                this.setState({
+                    isShowCrop: true
+                })
+            }
+        })
+    }
+
     pointOnMouseDown = (dir: string, e: any) => {
         e.stopPropagation();
         console.log("控制点", dir);
@@ -34,10 +47,13 @@ export default class Crop extends Component {
                 y: e.clientY
             }
         });
+        console.log('dir', dir, e.clientX, e.clientY);
+
     }
 
     onMouseDown = (e: any) => {
         console.log("点击了clip");
+        debugger;
         this.setState({
             curClipPos: {
                 x: e.target.offsetLeft,
@@ -50,27 +66,55 @@ export default class Crop extends Component {
             clipOnMove: true,
             direction: "move"
         });
+        console.log('clip', e.target.offsetLeft, e.target.offsetTop);
+        console.log('mouse', e.clientX, e.clientY);
+
     }
     onMouseUp = (e: any) => {
-        console.log(e);
+        console.log(this.state);
+        
+        console.log('释放clip');
         this.setState({
             clipOnMove: false
         });
     }
     onMouseMove = (e: any) => {
         if (!this.state.clipOnMove) return;
-        console.log(e);
         let offsetX, offsetY;
         switch (this.state.direction) {
             case Direction.move:
                 offsetX = this.state.curMousePos.x - this.state.curClipPos.x;
                 offsetY = this.state.curMousePos.y - this.state.curClipPos.y;
-                this.setState({
-                    clipMoved: {
-                        x: e.clientX - offsetX,
-                        y: e.clientY - offsetY
+                if(offsetX < e.clientX && offsetY < e.clientY) {
+                    if(e.clientX - offsetX + this.state.clipRect.w > this.cropWidth) {
+                        this.setState({
+                            clipMoved: {
+                                x: e.clientX - offsetX,
+                                y: e.clientY - offsetY
+                            }
+                        });
                     }
-                });
+                    this.setState({
+                        clipMoved: {
+                            x: e.clientX - offsetX,
+                            y: e.clientY - offsetY
+                        }
+                    });
+                } else if(offsetX > e.clientX && offsetY < e.clientY) {
+                    this.setState({
+                        clipMoved: {
+                            x: 0,
+                            y: e.clientY - offsetY
+                        }
+                    });
+                } else if(offsetX < e.clientX && offsetY > e.clientY) {
+                    this.setState({
+                        clipMoved: {
+                            x: e.clientX - offsetX,
+                            y: 0
+                        }
+                    });
+                }
                 break;
             case Direction.t:
                 offsetY = e.clientY - this.state.curMousePos.y;
@@ -207,20 +251,25 @@ export default class Crop extends Component {
                 break;
         }
     }
+    onMouseLeave = (e: any) => {
+        console.log(this.state);
+        console.log(e);
+        if(e.clientX > this.state.clipMoved.x || e.clientY < this.state.clipMoved.y) {
+            this.setState({
+                clipOnMove: false
+            })
+        }
+        
+    }
     render() {
         return (
-            <div className="clip-canvas"
-                style={{
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: 'pink'
-                }}
-                onMouseMove={(e) => {
-                    this.onMouseMove(e);
-                }}
-                onMouseLeave={(e)=> {
-                    
-                }}>
+            this.state.isShowCrop && 
+                <div className="clip-canvas" ref={this.cropArea}
+                    onMouseMove={(e) => {
+                        this.onMouseMove(e);
+                    }}
+                    >
+
                     <div className="clip-bound" style={{
                         left: this.state.clipMoved.x,
                         top: this.state.clipMoved.y,
@@ -235,18 +284,20 @@ export default class Crop extends Component {
                         }}>
                         {
                             this.controlPoints.map(p => (
-                                <div key={p+1}
+                                <div key={p + 1}
                                     className={`control-point control-point-${p}`}
                                     onMouseDown={(e) => {
                                         this.pointOnMouseDown(p, e);
+                                    }}
+                                    onMouseUp={(e) => {
+                                        this.onMouseUp(e);
                                     }}
                                 ></div>
                             ))
                         }
                     </div>
-                    
-            <VideoView />
-            </div>
+                </div>
+
         )
     }
 }

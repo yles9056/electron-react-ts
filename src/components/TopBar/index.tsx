@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import { AppBar, Toolbar, IconButton,Avatar } from '@material-ui/core'
 import { styled } from '@material-ui/styles'
-import { MinimizeIcon, MaximizeIcon, CloseIcon, UnfoldIcon, RestoreIcon } from '../../icons'
+import { MinimizeIcon, MaximizeIcon, CloseIcon, RestoreIcon } from '../../icons'
 /**
  * 标题栏区域
  */
@@ -31,7 +31,7 @@ export default function TopBar() {
             <Avatar sx={{width: '69px', height: '100%'}} alt="" src="./image/logo.png" variant="square" />
             <AppBar position="static" color="transparent" sx={{boxShadow: 'none', flex: 1}}>
                 <Toolbar>
-                    <UnfoldIcon />
+                    {/* <span className="icon-ic_arrow_r"></span> */}
                     <div style={{position: 'absolute', right: "5px"}}>
                         <MyIconButton aria-label="minimize" size="small" onClick={() => setWin('min')}>
                             <MinimizeIcon />

@@ -1,3 +1,7 @@
 .MuiButtonBase-root, .MuiMenuItem-root:hover, .MuiIconButton-root:hover {
     background-color: transparent;
 }
+.MuiTypography-root {
+    font-size: 12px;
+    font-weight: bold;
+}

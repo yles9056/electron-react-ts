@@ -1,13 +1,13 @@
 import MuiMenuItem from "./MuiMenuItem"
 import MuiToolbar from "./MuiToolbar";
-import MuiTabs from "./MuiTabs";
+import MuiRadio from "./MuiRadio";
 import MuiSvgIcon from "./MuiSvgIcon";
 import MuiIconButton from "./MuiIconButton"; 
 import MuiButtonBase from "./MuiButtonBase"; 
 const CustomComponents = {
     MuiMenuItem,
     MuiToolbar,
-    MuiTabs,
+    MuiRadio,
     MuiSvgIcon,
     MuiIconButton,
     MuiButtonBase

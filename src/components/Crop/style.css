@@ -1,21 +1,15 @@
-.preview {
-    width: 300px;
-    height: 300px;
+.crop-area {
+    width: 100%;
+    height: calc(100vh - 48px);
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .clip-canvas {
-    /* border: 1px solid black; */
+    height: 100%;
     position: relative;
     overflow: hidden;
-}
-
-.clip-mark {
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    /* background:rgba(0,0,0,.5);  */
 }
 
 .clip-bound {

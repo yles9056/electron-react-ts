@@ -4,5 +4,13 @@
     background-color: #FCFCFC;
 }
 .main-area {
-    flex: 1;
+    width: 100%;
+    position: relative;
+}
+.crop-area {
+    width: 100%;
+    height: calc(100vh - 48px);
+    position: absolute;
+    top: 0;
+    left: 0;
 }
