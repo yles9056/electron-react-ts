@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './style.css'
 import cropRatio from '../../helpers/util/crop'
+// 方位枚举
 enum Direction {
     move = "move",
     t = "t",
@@ -12,18 +13,30 @@ enum Direction {
     ld = "ld",
     rd = "rd",
 }
+// 当前裁剪区域大小
+interface CropInfo {
+    w: number | undefined;
+    h: number | undefined;
+}
 export default class Crop extends Component {
-    cropArea = React.createRef();
-    cropWidth = this.cropArea.current?.offsetWidth;
-    cropHeight = this.cropArea.current?.offsetHeight;
+    // 获取当前裁剪区域元素
+    cropArea: React.RefObject<HTMLDivElement>= React.createRef();
     state = {
+        // 是否显示裁剪框
         isShowCrop: false,
+        // 是否移动裁剪框
         clipOnMove: false,
+        // 
         curClipPos: { x: 0, y: 0 },
         curMousePos: { x: 0, y: 0 },
         clipMoved: { x: 0, y: 0 },
         clipRect: { w: 400, h: 600},
         direction: ""
+    }
+    
+    cropInfo: CropInfo = {
+        w: 0,
+        h: 0
     }
     controlPoints = ["t", "d", "l", "r", "lt", "rt", "ld", "rd"]
     componentDidMount = () => {
@@ -34,8 +47,19 @@ export default class Crop extends Component {
                 })
             }
         })
+        
     }
-
+    componentDidUpdate = () => {
+        if(this.cropInfo.w !== this.cropArea.current?.offsetWidth || this.cropInfo.h !== this.cropArea.current?.offsetHeight){
+            this.cropInfo = {
+                w: this.cropArea.current?.offsetWidth,
+                h: this.cropArea.current?.offsetHeight
+            }
+        }
+        // this.setState({
+        //     clipRect: this.cropInfo
+        // })
+    }
     pointOnMouseDown = (dir: string, e: any) => {
         e.stopPropagation();
         console.log("控制点", dir);
@@ -53,7 +77,6 @@ export default class Crop extends Component {
 
     onMouseDown = (e: any) => {
         console.log("点击了clip");
-        debugger;
         this.setState({
             curClipPos: {
                 x: e.target.offsetLeft,
@@ -72,7 +95,6 @@ export default class Crop extends Component {
     }
     onMouseUp = (e: any) => {
         console.log(this.state);
-        
         console.log('释放clip');
         this.setState({
             clipOnMove: false
@@ -85,36 +107,50 @@ export default class Crop extends Component {
             case Direction.move:
                 offsetX = this.state.curMousePos.x - this.state.curClipPos.x;
                 offsetY = this.state.curMousePos.y - this.state.curClipPos.y;
-                if(offsetX < e.clientX && offsetY < e.clientY) {
-                    if(e.clientX - offsetX + this.state.clipRect.w > this.cropWidth) {
-                        this.setState({
-                            clipMoved: {
-                                x: e.clientX - offsetX,
-                                y: e.clientY - offsetY
-                            }
-                        });
-                    }
-                    this.setState({
-                        clipMoved: {
-                            x: e.clientX - offsetX,
-                            y: e.clientY - offsetY
-                        }
-                    });
-                } else if(offsetX > e.clientX && offsetY < e.clientY) {
-                    this.setState({
-                        clipMoved: {
-                            x: 0,
-                            y: e.clientY - offsetY
-                        }
-                    });
-                } else if(offsetX < e.clientX && offsetY > e.clientY) {
-                    this.setState({
-                        clipMoved: {
-                            x: e.clientX - offsetX,
-                            y: 0
-                        }
-                    });
+                // 如果超出框选画面范围，则不移动
+                if(this.cropInfo.h && (e.clientY - offsetY + this.state.clipRect.h) > this.cropInfo.h
+                || this.cropInfo.w && (e.clientX - offsetX + this.state.clipRect.w) > this.cropInfo.w
+                || offsetY > e.clientY
+                || offsetX > e.clientX
+                ) {
+                    return;
                 }
+                this.setState({
+                    clipMoved: {
+                        x: e.clientX - offsetX,
+                        y: e.clientY - offsetY
+                    }
+                });
+                // if(offsetX < e.clientX && offsetY < e.clientY) {
+                //     if(this.state.curClipPos.x + this.state.clipRect.w > this.cropWidth) {
+                //         this.setState({
+                //             clipMoved: {
+                //                 x: 0,
+                //                 y: e.clientY - offsetY
+                //             }
+                //         });
+                //     }
+                //     this.setState({
+                //         clipMoved: {
+                //             x: e.clientX - offsetX,
+                //             y: e.clientY - offsetY
+                //         }
+                //     });
+                // } else if(offsetX > e.clientX && offsetY < e.clientY) {
+                //     this.setState({
+                //         clipMoved: {
+                //             x: 0,
+                //             y: e.clientY - offsetY
+                //         }
+                //     });
+                // } else if(offsetX < e.clientX && offsetY > e.clientY) {
+                //     this.setState({
+                //         clipMoved: {
+                //             x: e.clientX - offsetX,
+                //             y: 0
+                //         }
+                //     });
+                // }
                 break;
             case Direction.t:
                 offsetY = e.clientY - this.state.curMousePos.y;

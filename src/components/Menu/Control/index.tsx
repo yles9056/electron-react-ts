@@ -32,6 +32,9 @@ const Control = (props: any) => {
     menuFold.on('menu-unfold', () => {
       setDisplay('block')
     })
+    return () => {
+      menuFold.removeAllListeners();
+  }
   })
   const handleChangeRatio = (event: any) => {
     console.log(event.target.value);

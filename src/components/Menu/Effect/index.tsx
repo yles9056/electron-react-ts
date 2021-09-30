@@ -84,6 +84,9 @@ const Effect = () => {
     menuFold.on("menu-unfold", () => {
       setDisplay("block");
     });
+    return () => {
+      menuFold.removeAllListeners();
+  }
   });
   return (
     <div style={{ width: "220px", display: display }}>

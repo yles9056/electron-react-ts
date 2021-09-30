@@ -17,6 +17,9 @@ const Adjust = () => {
         menuFold.on('menu-unfold', () => {
             setDisplay('block')
         })
+        return () => {
+            menuFold.removeAllListeners();
+        }
     })
     return (
         <div style={{ width: "220px", display: display, padding: '0 15px' }}>

@@ -57,6 +57,7 @@ export default function SliderBar(props: any) {
         setValue(newValue);
         setSelected(true);
         menuFold.emit('menu-unfold')
+        // props.getMenuValue(newValue);
     };
     return (
         <Box sx={boxStyles}>
@@ -70,7 +71,7 @@ export default function SliderBar(props: any) {
                 }
             </MenuList>
             {value === "device" && <DeviceMenu />}
-            {value === "control" && <ControlMenu handleChangeRatio={props.handleChangeRatio}/>}
+            {value === "control" && <ControlMenu/>}
             {value === "effect" && <EffectMenu />}
             {value === "adjust" && <AdjustMenu />}
         </Box>
