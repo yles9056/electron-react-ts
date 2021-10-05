@@ -1,10 +1,8 @@
 import React from 'react'
-import menuFold from '../../helpers/util/menu-fold';
-// import { ControlMenu, DeviceMenu, AdjustMenu, EffectMenu } from '../Menu'
 const VideoView = () => {
     const videoRef: any = React.useRef();
     // const {value} = props;
-    const [width, setWidth] = React.useState('100%')
+    // const [width, setWidth] = React.useState('100%')
     // let offsetWidth, offsetHeight;
     // const video: HTMLElement | null = document.getElementById('video');
     // if(video) { 
@@ -35,7 +33,7 @@ const VideoView = () => {
             {value === "effect" && <EffectMenu />}
             {value === "adjust" && <AdjustMenu />}
             </div>} */}
-           <video style={{width: width, height: 'calc(100vh - 48px)', objectFit: 'fill', position: 'absolute', top: '0', left: '0'}} ref={videoRef}></video>
+           <video style={{width: '100%', height: 'calc(100vh - 48px)', objectFit: 'fill', position: 'absolute', top: '0', left: '0'}} ref={videoRef}></video>
        </>
     )
 }

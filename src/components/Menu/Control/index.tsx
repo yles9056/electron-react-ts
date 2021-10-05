@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   RadioGroup,
   FormControlLabel,
@@ -11,53 +11,58 @@ import {
   formLabelStyle,
   formControlLabelStyle,
 } from "../../../helpers/const/radio-style.const";
-import menuFold from '../../../helpers/util/menu-fold'
-import cropRatio from '../../../helpers/util/crop'
+import cropRatio from '../../../helpers/util/crop';
+import styles from './index.module.css';
 // Todo: 与后台对接后，该处Camera列表从后台获取
 const ratioList = [
-  { id: "1", name: "16:9"},
-  { id: "2", name: "9:16" },
-  { id: "3", name: "4:3" },
-  { id: "4", name: "3:4" },
-  { id: "5", name: "1:1" },
-  { id: "6", name: "Free ratio" },
+  { id: "1", name: "16:9", iconName: 'icon-ic_l_16_9_n', checked: true},
+  { id: "2", name: "9:16", iconName: 'icon-ic_p_16_9_n', checked: false },
+  { id: "3", name: "4:3", iconName: 'icon-ic_l_4_3_n-1', checked: false},
+  { id: "4", name: "3:4", iconName: 'icon-ic_p_4_3_n', checked: false },
+  { id: "5", name: "1:1", iconName: 'icon-ic_1_1_n', checked: false  },
+  { id: "6", name: "Free ratio", iconName: 'icon-ic_free_ratio_n', checked: false},
 ];
 
+const LabelName = (props: any) => {
+  const {name, iconName, checked} = props;
+  return (
+    <>
+      <span className={`${iconName} ${styles['ratio-icon']} ${checked && styles['checked']}`}>
+        <span className="path1"></span>
+        <span className="path2"></span>
+      </span>
+      <span>{name}</span>
+    </>
+  )
+}
 const Control = (props: any) => {
-  const [display, setDisplay] = React.useState('block');
-  const changeDisplay = () => {
-    setDisplay('none')
-  }
-  React.useEffect(() => {
-    menuFold.on('menu-unfold', () => {
-      setDisplay('block')
-    })
-    return () => {
-      menuFold.removeAllListeners();
-  }
-  })
+  const [value, setValue] = useState('16:9')
   const handleChangeRatio = (event: any) => {
-    console.log(event.target.value);
     cropRatio.emit('crop', event.target.value)
+    setValue(event.target.value)
   }
   return (
-    <div style={{ width: "220px", display: display }}>
-      <Title name="Control" onClick={changeDisplay} />
-      <FormControl sx={{ width: "220px" }}>
-        <FormLabel sx={formLabelStyle}>Ratio</FormLabel>
+    <div style={{ width: "220px", display: props.display }}>
+      <Title name="Control"/>
+      <FormControl sx={{ width: "220px", marginTop: '10px'}}>
+        <FormLabel sx={formLabelStyle}>
+          Ratio
+        </FormLabel>
         <RadioGroup
           aria-label="gender"
           name="radio-buttons-group"
+          value={value}
           onChange={handleChangeRatio}
         >
           {
             ratioList.map((item) => (
               <FormControlLabel
+                className={`${item.checked && styles['checked']}`}
                 key={item.id}
                 sx={formControlLabelStyle}
                 value={item.name}
                 control={<Radio />}
-                label={item.name}
+                label={<LabelName name={item.name} iconName={item.iconName} checked={item.checked}/>}
                 labelPlacement="start"
               />
             ))}

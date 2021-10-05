@@ -1,18 +1,14 @@
-import menuFold from "../../../helpers/util/menu-fold";
-// import { IconButton } from "@material-ui/core"
-import './title.css'
-const Title = (props: { name: string, onClick: () => void }) => {
-    const handleFold = () => {
-        props.onClick()
-        menuFold.removeAllListeners('menu-fold');
+import React, {useState} from 'react'
+import styles from './index.module.css'
+const Title = (props: { name: string}) => {
+    const [iconName, setIconName] = useState('icon-ic_reset_d');
+    const handleReset = () => {
+        setIconName('icon-ic_reset_n')
     }
     return (
-        <div className="title">
+        <div className={styles['title']}>
             <span>{props.name}</span>
-            {/* <IconButton sx={{padding: 0}} aria-label="fold" onClick={handleFold}>
-                
-            </IconButton> */}
-            <i className="icon-ic_arrow_l" onClick={handleFold}></i>
+            {props.name === 'Adjust' && <i className={iconName} onClick={handleReset}></i>}
         </div>
     )
 }

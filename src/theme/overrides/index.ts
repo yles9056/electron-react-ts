@@ -4,12 +4,14 @@ import MuiRadio from "./MuiRadio";
 import MuiSvgIcon from "./MuiSvgIcon";
 import MuiIconButton from "./MuiIconButton"; 
 import MuiButtonBase from "./MuiButtonBase"; 
+import MuiImageListItemBar from "./MuiImageListItemBar"; 
 const CustomComponents = {
     MuiMenuItem,
     MuiToolbar,
     MuiRadio,
     MuiSvgIcon,
     MuiIconButton,
-    MuiButtonBase
+    MuiButtonBase,
+    MuiImageListItemBar
 }
 export default CustomComponents;

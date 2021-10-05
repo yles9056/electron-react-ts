@@ -1,112 +1,99 @@
-import React from "react";
-import { ImageList, ImageListItem, ImageListItemBar } from "@material-ui/core";
+import React, {useState} from "react";
+import { ImageList, ImageListItem, ImageListItemBar,FormControl, FormLabel } from "@material-ui/core";
 import Title from "../Title";
-import menuFold from "../../../helpers/util/menu-fold";
-const itemData = [
+import {
+  formLabelStyle
+} from "../../../helpers/const/radio-style.const";
+interface ImgList {
+  img: string;
+  title: string;
+  isClick: boolean;
+}
+// Filter图像数据
+const itemData:  ImgList[]= [
   {
-    img: "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
-    title: "Breakfast",
-    author: "@bkristastucchio",
-    rows: 2,
-    cols: 2,
-    featured: true,
+    img: './images/graphic_none.png',
+    title: "None",
+    isClick: true
   },
   {
-    img: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
-    title: "Burger",
-    author: "@rollelflex_graphy726",
+    img: "./images/graphic_bw_contrast.png",
+    title: "Bw Contrast",
+    isClick: false
   },
   {
-    img: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
-    title: "Camera",
-    author: "@helloimnik",
+    img: "./images/graphic_cool.png",
+    title: "Cool",
+    isClick: false
   },
   {
-    img: "https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c",
-    title: "Coffee",
-    author: "@nolanissac",
-    cols: 2,
+    img: "./images/graphic_warm.png",
+    title: "Warm",
+    isClick: false
   },
   {
-    img: "https://images.unsplash.com/photo-1533827432537-70133748f5c8",
-    title: "Hats",
-    author: "@hjrc33",
-    cols: 2,
+    img:"./images/graphic_captivate.png",
+    title: "Captivate",
+    isClick: false
   },
   {
-    img: "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62",
-    title: "Honey",
-    author: "@arwinneil",
-    rows: 2,
-    cols: 2,
-    featured: true,
+    img: "./images/graphic_stylish.png",
+    title: "Stylish",
+    isClick: false
   },
   {
-    img: "https://images.unsplash.com/photo-1516802273409-68526ee1bdd6",
-    title: "Basketball",
-    author: "@tjdragotta",
+    img: "./images/graphic_vibrant.png",
+    title: "Vibrant",
+    isClick: false
   },
   {
-    img: "https://images.unsplash.com/photo-1518756131217-31eb79b20e8f",
-    title: "Fern",
-    author: "@katie_wasserman",
+    img: "./images/graphic_highlight.png",
+    title: "Highlight",
+    isClick: false
   },
   {
-    img: "https://images.unsplash.com/photo-1597645587822-e99fa5d45d25",
-    title: "Mushrooms",
-    author: "@silverdalex",
-    rows: 2,
-    cols: 2,
-  },
-  {
-    img: "https://images.unsplash.com/photo-1567306301408-9b74779a11af",
-    title: "Tomato basil",
-    author: "@shelleypauls",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1471357674240-e1a485acb3e1",
-    title: "Sea star",
-    author: "@peterlaster",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
-    title: "Bike",
-    author: "@southside_customs",
-    cols: 2,
-  },
-];
-const Effect = () => {
-  const [display, setDisplay] = React.useState("block");
-  const changeDisplay = () => {
-    setDisplay("none");
-  };
-  React.useEffect(() => {
-    menuFold.on("menu-unfold", () => {
-      setDisplay("block");
-    });
-    return () => {
-      menuFold.removeAllListeners();
+    img: "./images/graphic_contrast.png",
+    title: "Contrast",
+    isClick: false
   }
-  });
+];
+const imageItemStyle = {
+  width: '84px', 
+  height: '96px', 
+  marginBottom: '10px', 
+  cursor: 'pointer'
+}
+
+const Effect = (props: any) => {
+  const [currentTitle, setCurrentTitle] = useState('None');
+  // 设置点击后的图像是否点击
+  const handleFilterClick = (e: any, title: string) => {
+    console.log(e, title)
+    setCurrentTitle(title);
+  }
   return (
-    <div style={{ width: "220px", display: display }}>
-      <Title name="Effect" onClick={changeDisplay} />
-      <div>
-        <span>Filter</span>
-        <ImageList sx={{ width: 220, height: 450 }}>
-          {itemData.map((item) => (
-            <ImageListItem key={item.img}>
+    <div style={{ width: "220px", display: props.display }}>
+      <Title name="Effect"/>
+      <FormControl sx={{ width: "220px", marginTop: '10px'}}>
+        <FormLabel sx={formLabelStyle}>
+          Filter
+        </FormLabel>
+        <ImageList sx={{padding: '0 15px' }} rowHeight={96}>
+          {
+            itemData.map((item) => (
+            <ImageListItem key={item.img} sx={{...imageItemStyle, border: `${(item.title === currentTitle) ? '2px solid #0078AE' : ''}`}}>
               <img
-                src={`${item.img}?w=248&fit=crop&auto=format`}
-                srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                src={item.img}
+                srcSet={item.img}
                 alt={item.title}
                 loading="lazy"
+                onClick={(e) => handleFilterClick(e, item.title)}
               />
-              <ImageListItemBar title={item.title} />
+              <ImageListItemBar sx={{textAlign: 'center', fontWeight: 'bold'}} title={item.title} />
             </ImageListItem>
           ))}
         </ImageList>
-      </div>
+      </FormControl>
     </div>
   );
 };

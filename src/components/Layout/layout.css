@@ -4,6 +4,8 @@
     background-color: #FCFCFC;
 }
 .main-area {
+    display: flex;
+    grid-template-columns: auto 1fr; 
     width: 100%;
     position: relative;
 }

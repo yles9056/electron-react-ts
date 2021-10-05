@@ -5,7 +5,6 @@ import Crop from '../Crop'
 import VideoView from '../VideoView'
 import { Grid, Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-// import { ControlMenu, DeviceMenu, AdjustMenu, EffectMenu } from '../Menu'
 import './layout.css'
 const useStyled = makeStyles({
     box: {
@@ -22,10 +21,6 @@ const useStyled = makeStyles({
 })
 export default function Layout() {
     const classes = useStyled();
-    // const [value, setValue] = React.useState()
-    // const getMenuValue = (value: any) => {
-    //     setValue(value)
-    // }
     return (
             <Grid sx={{ gridTemplateRows: '48px 1fr' }}>
                 <Box className={`${classes.box} top-bar`}>

@@ -1,52 +1,53 @@
-import React from 'react'
-import { RadioGroup, FormControlLabel, Radio, FormControl, FormLabel } from '@material-ui/core'
+import React, {useState} from 'react'
+import { RadioGroup, FormControlLabel, Radio, FormControl } from '@material-ui/core'
 import Title from '../Title'
-import menuFold from '../../../helpers/util/menu-fold'
-import { formControlLabelStyle, formLabelStyle } from '../../../helpers/const/radio-style.const'
+import { formControlLabelStyle } from '../../../helpers/const/radio-style.const'
 // Todo: 与后台对接后，该处Camera列表从后台获取
 const cameraList = [
-    { id: '1', name: 'Kensington WebCam01' },
-    { id: '2', name: 'Kensington WebCam02' },
-    { id: '3', name: 'Kensington WebCam03' },
-    { id: '4', name: 'Kensington WebCam04' },
+    {id: '0', name: 'Local Camera', checked: true},
+    { id: '1', name: 'Kensington WebCam01', checked: false },
+    { id: '2', name: 'Kensington WebCam02', checked: false },
+    { id: '3', name: 'Kensington WebCam03', checked: false },
+    { id: '4', name: 'Kensington WebCam04', checked: false },
 ]
-
-const Device = () => {
-    const [value, setValue] = React.useState('');
-    const [display, setDisplay] = React.useState('block');
-
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue((event.target as HTMLInputElement).value);
-    };
- 
-    const changeDisplay = () => {
-        setDisplay('none')
-    }
-    React.useEffect(() => {
-        menuFold.on('menu-unfold', () => {
-            setDisplay('block')
-        })
-        return () => {
-            menuFold.removeAllListeners();
-        }
-    })
+const LabelName = (props: any) => {
+    const {checked, name} = props;
     return (
-        <div style={{width: "220px", display: display}}> 
-            <Title name="Device" onClick={changeDisplay}/>
+        <>
+            <span style={{color: `${checked ? '#0078AE': '#605E5C'}`}}>{name}</span>
+        </>
+    )
+}
+const Device = (props: any) => {
+    // const [value, setValue] = useState('0');
+    const [cameraData, setCameraData] = useState(cameraList);
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const newData = cameraData.map((item) => {
+            if (item.id === event.target.value) {
+                return { ...item, checked: true }
+            } else {
+                return { ...item, checked: false };
+            }
+        });
+        setCameraData(newData);
+    };
+    return (
+        <>
+        <div style={{width: "220px", display: props.display}}> 
+        <Title name="Device"/>
             <FormControl sx={{ width: '220px' }}>
-                <FormLabel sx={formLabelStyle}>Camera</FormLabel>
                 <RadioGroup
-                    aria-label="gender"
+                    aria-label="device"
                     name="controlled-radio-buttons-group"
-                    value={value}
+                    defaultValue="0"
                     onChange={handleChange}
                 >
                     {
-                        cameraList.map(item => (
+                        cameraData.map(item => (
                             <FormControlLabel key={item.id}
-                                value={item.name}
+                                value={item.id}
                                 control={<Radio size="small" />}
-                                label={item.name}
+                                label={<LabelName checked={item.checked} name={item.name}/>}
                                 labelPlacement="start"
                                 sx={formControlLabelStyle} />
                         ))
@@ -54,6 +55,7 @@ const Device = () => {
                 </RadioGroup>
             </FormControl>
         </div>
+        </>
     )
 }
 export default Device;

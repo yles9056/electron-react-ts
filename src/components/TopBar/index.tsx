@@ -28,10 +28,10 @@ export default function TopBar() {
     })
     return (
         <>
-            <Avatar sx={{width: '69px', height: '100%'}} alt="" src="./image/logo.png" variant="square" />
             <AppBar position="static" color="transparent" sx={{boxShadow: 'none', flex: 1}}>
-                <Toolbar>
+                <Toolbar sx={{justifyContent:'center'}}>
                     {/* <span className="icon-ic_arrow_r"></span> */}
+                    <Avatar sx={{width: '69px', height: '100%'}} alt="" src="./images/logo.png" variant="square" />
                     <div style={{position: 'absolute', right: "5px"}}>
                         <MyIconButton aria-label="minimize" size="small" onClick={() => setWin('min')}>
                             <MinimizeIcon />

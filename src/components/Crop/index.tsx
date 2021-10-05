@@ -26,10 +26,13 @@ export default class Crop extends Component {
         isShowCrop: false,
         // 是否移动裁剪框
         clipOnMove: false,
-        // 
+        // 当前裁剪框左上角坐标
         curClipPos: { x: 0, y: 0 },
+        // 当前鼠标坐标
         curMousePos: { x: 0, y: 0 },
+        // 裁剪框需要移动的x,y
         clipMoved: { x: 0, y: 0 },
+        // 当前裁剪框大小
         clipRect: { w: 400, h: 600},
         direction: ""
     }
@@ -50,15 +53,13 @@ export default class Crop extends Component {
         
     }
     componentDidUpdate = () => {
+        // 获取当前整个裁剪区域的宽高
         if(this.cropInfo.w !== this.cropArea.current?.offsetWidth || this.cropInfo.h !== this.cropArea.current?.offsetHeight){
             this.cropInfo = {
                 w: this.cropArea.current?.offsetWidth,
                 h: this.cropArea.current?.offsetHeight
             }
         }
-        // this.setState({
-        //     clipRect: this.cropInfo
-        // })
     }
     pointOnMouseDown = (dir: string, e: any) => {
         e.stopPropagation();
@@ -96,6 +97,7 @@ export default class Crop extends Component {
     onMouseUp = (e: any) => {
         console.log(this.state);
         console.log('释放clip');
+        console.log('鼠标抬起时：' + e.clientX, e.clientY);
         this.setState({
             clipOnMove: false
         });
@@ -108,8 +110,8 @@ export default class Crop extends Component {
                 offsetX = this.state.curMousePos.x - this.state.curClipPos.x;
                 offsetY = this.state.curMousePos.y - this.state.curClipPos.y;
                 // 如果超出框选画面范围，则不移动
-                if(this.cropInfo.h && (e.clientY - offsetY + this.state.clipRect.h) > this.cropInfo.h
-                || this.cropInfo.w && (e.clientX - offsetX + this.state.clipRect.w) > this.cropInfo.w
+                if((this.cropInfo.h && (e.clientY - offsetY + this.state.clipRect.h) > this.cropInfo.h)
+                || (this.cropInfo.w && (e.clientX - offsetX + this.state.clipRect.w) > this.cropInfo.w)
                 || offsetY > e.clientY
                 || offsetX > e.clientX
                 ) {
@@ -121,36 +123,6 @@ export default class Crop extends Component {
                         y: e.clientY - offsetY
                     }
                 });
-                // if(offsetX < e.clientX && offsetY < e.clientY) {
-                //     if(this.state.curClipPos.x + this.state.clipRect.w > this.cropWidth) {
-                //         this.setState({
-                //             clipMoved: {
-                //                 x: 0,
-                //                 y: e.clientY - offsetY
-                //             }
-                //         });
-                //     }
-                //     this.setState({
-                //         clipMoved: {
-                //             x: e.clientX - offsetX,
-                //             y: e.clientY - offsetY
-                //         }
-                //     });
-                // } else if(offsetX > e.clientX && offsetY < e.clientY) {
-                //     this.setState({
-                //         clipMoved: {
-                //             x: 0,
-                //             y: e.clientY - offsetY
-                //         }
-                //     });
-                // } else if(offsetX < e.clientX && offsetY > e.clientY) {
-                //     this.setState({
-                //         clipMoved: {
-                //             x: e.clientX - offsetX,
-                //             y: 0
-                //         }
-                //     });
-                // }
                 break;
             case Direction.t:
                 offsetY = e.clientY - this.state.curMousePos.y;
@@ -288,14 +260,13 @@ export default class Crop extends Component {
         }
     }
     onMouseLeave = (e: any) => {
-        console.log(this.state);
         console.log(e);
-        if(e.clientX > this.state.clipMoved.x || e.clientY < this.state.clipMoved.y) {
+        if(e.clientX > e.target.offsetWidth || e.clientY > e.target.offsetHeight){
+            console.log("离开当前裁剪框");
             this.setState({
                 clipOnMove: false
             })
         }
-        
     }
     render() {
         return (
@@ -304,8 +275,19 @@ export default class Crop extends Component {
                     onMouseMove={(e) => {
                         this.onMouseMove(e);
                     }}
+                    onMouseLeave = {
+                        (e) => {
+                            this.onMouseLeave(e)
+                        }
+                    }
+                    onMouseUp = {
+                        () => {
+                            this.setState({
+                                clipOnMove: false
+                            })   
+                        }
+                    }
                     >
-
                     <div className="clip-bound" style={{
                         left: this.state.clipMoved.x,
                         top: this.state.clipMoved.y,
