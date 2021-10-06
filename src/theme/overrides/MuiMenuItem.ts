@@ -4,7 +4,7 @@ const MuiMenuItem =  {
           // marginBottom: '20px',
           color: '#1D2C41',
           fontWeight: 600,
-          fontSize: '10px',
+          fontSize: '12px',
           justifyContent: 'center',
           '&:hover': {
             backgroundColor: 'transparent'

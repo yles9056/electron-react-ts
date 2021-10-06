@@ -71,7 +71,7 @@ export default function SliderBar(props: any) {
     };
     const clickUnfold = () => {
         if (isUnfold === 'icon-ic_menu') {
-            setValue('device')
+            // setValue('device')
             setSelected(true);
             setIsUnfold('icon-ic_arrow')
             setDisplay('block')

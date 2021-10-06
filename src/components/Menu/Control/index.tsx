@@ -26,13 +26,13 @@ const ratioList = [
 const LabelName = (props: any) => {
   const {name, iconName, checked} = props;
   return (
-    <>
+    <div style={{display: 'flex', alignItems: 'center', fontSize: '13px'}}>
       <span className={`${iconName} ${styles['ratio-icon']}`}>
         <span className="path1"></span>
         <span className="path2"></span>
       </span>
       <span style={{color: `${checked ? '#0078AE': '#605E5C'}`}}>{name}</span>
-    </>
+    </div>
   )
 }
 const Control = (props: any) => {
