@@ -12,17 +12,17 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
-import { autoUpdater } from 'electron-updater';
-import log from 'electron-log';
+//import { autoUpdater } from 'electron-updater';
+//import log from 'electron-log';
 import { resolveHtmlPath } from './util';
 
-export default class AppUpdater {
+/* export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
     autoUpdater.logger = log;
     autoUpdater.checkForUpdatesAndNotify();
   }
-}
+} */
 let mainWindow: BrowserWindow;
 
 ipcMain.on('ipc-example', async (event, arg) => {
@@ -126,7 +126,18 @@ const createWindow = async () => {
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
-  new AppUpdater();
+  if (isDevelopment) {
+    const { autoUpdater } = require('electron-updater');
+    const log = require('electron-log');
+    class AppUpdater {
+      constructor() {
+        log.transports.file.level = 'info';
+        autoUpdater.logger = log;
+        autoUpdater.checkForUpdatesAndNotify();
+      }
+    }
+    new AppUpdater();
+  }
   mainWindowState.manage(mainWindow);
 };
 /**
