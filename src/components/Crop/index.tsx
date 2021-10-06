@@ -260,7 +260,6 @@ export default class Crop extends Component {
         }
     }
     onMouseLeave = (e: any) => {
-        console.log(e);
         if(e.clientX > e.target.offsetWidth || e.clientY > e.target.offsetHeight){
             console.log("离开当前裁剪框");
             this.setState({

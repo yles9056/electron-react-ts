@@ -84,7 +84,7 @@ const createWindow = async () => {
     minHeight: 600,
     frame: false,
     show: false,
-    icon: 'public/image/logo.png',
+    icon: 'public/images/logo.png',
     webPreferences: {
       nativeWindowOpen: false,
       contextIsolation: true,

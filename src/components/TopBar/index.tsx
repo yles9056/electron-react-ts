@@ -12,7 +12,7 @@ const MyIconButton = styled(IconButton)({
 })
 export default function TopBar() {
     // 设置展示
-    const [showRestore, setShowRestore] = React.useState(true);
+    const [showRestore, setShowRestore] = React.useState(false);
     // 点击窗口控制图标时
     const setWin = (type: string) => {
         ipcRenderer.send(type)
