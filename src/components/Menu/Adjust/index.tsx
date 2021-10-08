@@ -67,7 +67,7 @@ const Adjust = (props: any) => {
         setAadjustAdvanceData(newData);
     };
     const handleAdvanceAuto = (e: any, data: AdjustData) => {
-        const newData = adjustData.map((item) => {
+        const newData = adjustAdvanceData.map((item) => {
             if (item.name === data.name) {
                 return { ...item, auto: e.target.checked }
             } else {
@@ -76,18 +76,17 @@ const Adjust = (props: any) => {
         });
         setAadjustAdvanceData(newData);
     }
-    
 
     // 设置是否开启advance adjust内容
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setShowAdvance(event.target.checked);
     };
+
     return (
-        <div style={{ width: "220px", display: props.display, height: '600px', overflowY: 'auto' }}>
+        <div style={{ width: "220px", display: props.display, height: `${(window.innerHeight - 80) + 'px'}`, overflowY: 'auto' }}>
             <Title name="Adjust" />
             <Typography sx={{
-                fontSize: '10px',
-                fontWeight: '600',
+                fontSize: '11px',
                 paddingLeft: '15px',
                 marginTop: '10px'
             }}>General</Typography>
@@ -97,7 +96,7 @@ const Adjust = (props: any) => {
                     <Box key={item.name} sx={{ height: '50px', borderBottom: '0.5px solid #C8C6C4', padding: '10px 15px' }}>
                         <Grid container sx={{ justifyContent: 'space-between', alignItems: 'center', height: '20px' }}>
                             <div className={styles['adjust-title']}>
-                                <span className={item.iconName} style={{ fontSize: "14px" }}>
+                                <span className={item.iconName} style={{ fontSize: "20px", paddingRight: '3px' }}>
                                 </span>
                                 <span className={styles['adjust-name']}>{item.name}</span>
                             </div>
@@ -133,11 +132,11 @@ const Adjust = (props: any) => {
                 />
             </div>
             {
-                showAdvance && adjustAdvanceList.map(advance => (
+                showAdvance && adjustAdvanceData.map(advance => (
                     <Box key={advance.name} sx={{ height: '50px', borderBottom: '0.5px solid #C8C6C4', padding: '10px 15px' }}>
                         <Grid container sx={{ justifyContent: 'space-between', alignItems: 'center', height: '20px' }}>
                             <div className={styles['adjust-title']}>
-                                <span className={advance.iconName} style={{ fontSize: "14px" }}>
+                                <span className={advance.iconName} style={{ fontSize: "20px", paddingRight: '3px' }}>
                                 </span>
                                 <span className={styles['adjust-name']}>{advance.name}</span>
                             </div>
@@ -158,7 +157,7 @@ const Adjust = (props: any) => {
                             disabled={advance.auto}
                             onChange={(e) => handleAdvanceSliderChange(e, advance)}
                         />
-                        <span className={styles['adjust-value']}>{advance.value}</span>
+                            <span className={`${styles['adjust-value']} ${advance.auto && styles['disabled']}`}>{advance.value}</span>
                     </Box>
                 ))
             }

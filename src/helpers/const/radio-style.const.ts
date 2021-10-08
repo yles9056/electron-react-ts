@@ -7,7 +7,7 @@ const formControlLabelStyle = {
     padding: "0 15px",
     justifyContent: "space-between",
     '& .css-ahj2mt-MuiTypography-root': {
-        fontSize: '12px',
+        fontSize: '13px',
         fontWight: '700',
     },
     "&.Mui-checked": {
@@ -17,7 +17,7 @@ const formControlLabelStyle = {
 
 /* FormLabel sx styles */
 const formLabelStyle = { 
-    fontSize: '10px',
+    fontSize: '11px',
     fontWeight: '600', 
     paddingLeft: '15px',
     '&.Mui-focused': {

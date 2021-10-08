@@ -2,7 +2,7 @@
   "name": "electron-react-ts",
   "version": "0.1.0",
   "private": true,
-  "main": "./build/main.js",
+  "main": "build/main.js",
   "dependencies": {
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
@@ -23,13 +23,15 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "cross-env BROWSER=none react-scripts start",
     "start:desktop": "cross-env NODE_ENV=development PORT=3000 electron .",
     "build:desktop:dev": "tsc --watch -p ./main/tsconfig.json",
     "build": "cross-env PUBLIC_URL=./ react-scripts build",
     "build:desktop": "tsc -p ./main/tsconfig.json",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build:all": "rimraf ./build && yarn build && yarn build:desktop",
+    "dist": "yarn build:all && rimraf ./dist && electron-builder build -c.extraMetadata.main=build/main.js"
   },
   "eslintConfig": {
     "extends": [
@@ -53,9 +55,16 @@
     "@types/electron": "^1.6.10",
     "cross-env": "^7.0.3",
     "electron": "^14.0.0",
+    "electron-builder": "^22.11.7",
     "electron-debug": "^3.2.0",
     "electron-devtools-installer": "^3.2.0",
     "electron-log": "^4.4.1",
     "electron-updater": "^4.3.9"
+  },
+  "build": {
+    "productName": "Konnect",
+    "appId": "com.kensington.Konnect",
+    "asar": true,
+    "electronVersion": "14.0.0"
   }
 }
